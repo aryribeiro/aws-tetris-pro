@@ -16,7 +16,7 @@ const imageCache = new Map<string, HTMLImageElement>()
 
 function loadImage(src: string): HTMLImageElement | null {
   const cached = imageCache.get(src)
-  if (cached?.complete) return cached
+  if (cached?.complete && cached.naturalWidth > 0) return cached
 
   if (!cached) {
     const img = new Image()
@@ -130,7 +130,7 @@ export function renderGame(
   }
 
   // Logo at the top of the grid, proportional
-  if (logoImage?.complete) {
+  if (logoImage?.complete && logoImage.naturalWidth > 0) {
     ctx.save()
     const imgW = logoImage.naturalWidth
     const imgH = logoImage.naturalHeight
