@@ -102,7 +102,7 @@ export default function Home() {
                 </button>
               )}
               {gameState.status === 'playing' && (
-                <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.75rem', paddingTop: '0.4rem' }}>
+                <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.875rem', fontWeight: 700, paddingTop: '0.4rem' }}>
                   A/D mover &bull; W girar &bull; S acelerar
                 </div>
               )}
