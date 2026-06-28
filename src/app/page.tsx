@@ -8,7 +8,7 @@ import GameOverScreen from '@/components/GameOverScreen'
 import { useGameLoop } from '@/hooks/useGameLoop'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useGameAudio } from '@/hooks/useGameAudio'
-import { preloadIcons } from '@/lib/renderer'
+import { preloadIcons, CANVAS_WIDTH } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 import type { GameEvent } from '@/lib/engine'
 
@@ -64,58 +64,65 @@ export default function Home() {
       minHeight: '100vh',
     }}>
       <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
-        {/* Left column: ranking button + canvas + controls */}
+        {/* Left column: canvas + controls */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '0.75rem',
         }}>
-          <button
-            onClick={() => setRankingOpen(true)}
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(255, 153, 0, 0.5)',
-              borderRadius: '6px',
-              color: '#FF9900',
-              padding: '0.5rem 1.5rem',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            Ranking
-          </button>
-
           <GameCanvas
             grid={gameState.grid}
             activePiece={gameState.activePiece}
             flashLines={flashLines}
           />
 
-          {gameState.status === 'idle' && (
+          {/* Buttons row: Começar left, Ranking right */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: `${CANVAS_WIDTH}px`,
+          }}>
+            <div>
+              {gameState.status === 'idle' && (
+                <button
+                  onClick={handleStart}
+                  style={{
+                    background: '#FF9900',
+                    color: '#232F3E',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '0.6rem 1.5rem',
+                    fontSize: '0.9rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Começar
+                </button>
+              )}
+              {gameState.status === 'playing' && (
+                <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.75rem', paddingTop: '0.4rem' }}>
+                  A/D mover &bull; W girar &bull; S acelerar
+                </div>
+              )}
+            </div>
             <button
-              onClick={handleStart}
+              onClick={() => setRankingOpen(true)}
               style={{
                 background: '#FF9900',
                 color: '#232F3E',
                 border: 'none',
                 borderRadius: '6px',
-                padding: '0.75rem 2rem',
-                fontSize: '1rem',
+                padding: '0.6rem 1.5rem',
+                fontSize: '0.9rem',
                 fontWeight: 700,
                 cursor: 'pointer',
               }}
             >
-              Começar
+              Ranking
             </button>
-          )}
-
-          {gameState.status === 'playing' && (
-            <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.75rem' }}>
-              A/D mover &bull; W girar &bull; S acelerar
-            </div>
-          )}
+          </div>
         </div>
 
         {/* Right column: sidebar — aligned to canvas top edge */}
@@ -124,7 +131,6 @@ export default function Home() {
           flexDirection: 'column',
           gap: '0.6rem',
           width: '200px',
-          marginTop: '2.75rem',
         }}>
           <StatBox label="Pontuação" value={gameState.score.toLocaleString('pt-BR')} />
           <StatBox label="Nível" value={String(gameState.level)} />
@@ -158,6 +164,33 @@ export default function Home() {
       {gameState.status === 'gameover' && (
         <GameOverScreen score={gameState.score} onRestart={handleRestart} />
       )}
+
+      {/* Footer */}
+      <footer style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        textAlign: 'center',
+        padding: '0.6rem',
+        background: 'rgba(26, 35, 50, 0.95)',
+        borderTop: '1px solid rgba(255, 153, 0, 0.2)',
+      }}>
+        <div style={{ color: '#F2F3F3', fontSize: '0.8rem', fontStyle: 'italic' }}>
+          por{' '}
+          <a
+            href="https://www.linkedin.com/in/aryribeiro"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#FF9900', fontWeight: 700, textDecoration: 'none' }}
+          >
+            Ary Ribeiro
+          </a>
+        </div>
+        <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.7rem', marginTop: '0.2rem' }}>
+          Web Game somente para Computador.
+        </div>
+      </footer>
     </main>
   )
 }
