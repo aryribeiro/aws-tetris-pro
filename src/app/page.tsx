@@ -62,35 +62,63 @@ export default function Home() {
       paddingTop: '1.5rem',
       paddingBottom: '1.5rem',
       minHeight: '100vh',
-      gap: '0.75rem',
     }}>
-      {/* Title centered over the game grid */}
-      <h1 style={{
-        color: '#FF9900',
-        fontSize: '1.6rem',
-        fontWeight: 700,
-        margin: 0,
-        width: `${CANVAS_WIDTH}px`,
-        textAlign: 'center',
-      }}>
-        AWS Tetris Pro
-      </h1>
-
-      {/* Game area */}
       <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
-        <GameCanvas
-          grid={gameState.grid}
-          activePiece={gameState.activePiece}
-          flashLines={flashLines}
-        />
+        {/* Left column: title + canvas + controls */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.75rem',
+        }}>
+          <h1 style={{
+            color: '#FF9900',
+            fontSize: '1.6rem',
+            fontWeight: 700,
+            margin: 0,
+            textAlign: 'center',
+          }}>
+            AWS Tetris Pro
+          </h1>
 
+          <GameCanvas
+            grid={gameState.grid}
+            activePiece={gameState.activePiece}
+            flashLines={flashLines}
+          />
+
+          {gameState.status === 'idle' && (
+            <button
+              onClick={handleStart}
+              style={{
+                background: '#FF9900',
+                color: '#232F3E',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '0.75rem 2rem',
+                fontSize: '1rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+              }}
+            >
+              Começar
+            </button>
+          )}
+
+          {gameState.status === 'playing' && (
+            <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.75rem' }}>
+              A/D mover &bull; W girar &bull; S acelerar
+            </div>
+          )}
+        </div>
+
+        {/* Right column: sidebar */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '0.6rem',
           width: '150px',
         }}>
-          {/* Ranking button - same width as cards */}
           <button
             onClick={() => setRankingOpen(true)}
             style={{
@@ -133,31 +161,6 @@ export default function Home() {
           <NextPiecePreview piece={gameState.nextPiece} />
         </div>
       </div>
-
-      {/* Footer controls */}
-      {gameState.status === 'idle' && (
-        <button
-          onClick={handleStart}
-          style={{
-            background: '#FF9900',
-            color: '#232F3E',
-            border: 'none',
-            borderRadius: '6px',
-            padding: '0.75rem 2rem',
-            fontSize: '1rem',
-            fontWeight: 700,
-            cursor: 'pointer',
-          }}
-        >
-          Começar
-        </button>
-      )}
-
-      {gameState.status === 'playing' && (
-        <div style={{ color: 'rgba(242, 243, 243, 0.5)', fontSize: '0.75rem' }}>
-          A/D mover &bull; W girar &bull; S acelerar
-        </div>
-      )}
 
       {/* Modals */}
       <RankingModal open={rankingOpen} onClose={() => setRankingOpen(false)} />
