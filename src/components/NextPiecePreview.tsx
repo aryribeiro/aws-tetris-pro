@@ -55,7 +55,11 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
         }}
       />
       {piece && (
-        <div style={{ marginTop: '0.6rem' }}>
+        <div style={{
+          marginTop: '0.6rem',
+          width: `${PREVIEW_SIZE}px`,
+          textAlign: 'left',
+        }}>
           <div style={{
             color: '#FF9900',
             fontSize: '1rem',
@@ -69,6 +73,7 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
             marginTop: '0.3rem',
             opacity: 0.8,
             lineHeight: 1.4,
+            wordBreak: 'break-word',
           }}>
             {getFullDescription(piece.service.comando)}
           </div>
