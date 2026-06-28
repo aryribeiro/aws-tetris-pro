@@ -8,7 +8,7 @@ import GameOverScreen from '@/components/GameOverScreen'
 import { useGameLoop } from '@/hooks/useGameLoop'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useGameAudio } from '@/hooks/useGameAudio'
-import { preloadIcons, CANVAS_WIDTH } from '@/lib/renderer'
+import { preloadIcons } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 import type { GameEvent } from '@/lib/engine'
 
@@ -64,22 +64,28 @@ export default function Home() {
       minHeight: '100vh',
     }}>
       <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
-        {/* Left column: title + canvas + controls */}
+        {/* Left column: ranking button + canvas + controls */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           gap: '0.75rem',
         }}>
-          <h1 style={{
-            color: '#FF9900',
-            fontSize: '1.6rem',
-            fontWeight: 700,
-            margin: 0,
-            textAlign: 'center',
-          }}>
-            AWS Tetris Pro
-          </h1>
+          <button
+            onClick={() => setRankingOpen(true)}
+            style={{
+              background: 'transparent',
+              border: '1px solid rgba(255, 153, 0, 0.5)',
+              borderRadius: '6px',
+              color: '#FF9900',
+              padding: '0.5rem 1.5rem',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            Ranking
+          </button>
 
           <GameCanvas
             grid={gameState.grid}
@@ -119,23 +125,6 @@ export default function Home() {
           gap: '0.6rem',
           width: '150px',
         }}>
-          <button
-            onClick={() => setRankingOpen(true)}
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(255, 153, 0, 0.5)',
-              borderRadius: '6px',
-              color: '#FF9900',
-              padding: '0.5rem',
-              fontSize: '0.85rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-              width: '100%',
-            }}
-          >
-            Ranking
-          </button>
-
           <StatBox label="Pontuação" value={gameState.score.toLocaleString('pt-BR')} />
           <StatBox label="Nível" value={String(gameState.level)} />
           <StatBox label="Linhas" value={String(gameState.linesCleared)} />

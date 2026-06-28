@@ -9,7 +9,7 @@ const MAX_LEVEL = 10
 const BASE_INTERVAL = 1000
 const SPEED_FACTOR = 0.82
 
-const LINE_SCORES = [0, 100, 300, 500, 800]
+const LINE_SCORES = [0, 100, 300, 500, 1200]
 
 export function createEmptyGrid(): Grid {
   return Array.from({ length: ROWS }, () => Array(COLS).fill(null))

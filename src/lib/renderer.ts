@@ -9,8 +9,8 @@ export const CANVAS_HEIGHT = ROWS * BLOCK_SIZE
 const BEVEL_LIGHT = 'rgba(255, 255, 255, 0.35)'
 const BEVEL_DARK = 'rgba(0, 0, 0, 0.4)'
 const BEVEL_SIZE = 3
-const GRID_LINE_COLOR = 'rgba(255, 255, 255, 0.04)'
-const BG_COLOR = '#1a2332'
+const GRID_LINE_COLOR = 'rgba(0, 0, 0, 0.06)'
+const BG_COLOR = '#ffffff'
 
 const imageCache = new Map<string, HTMLImageElement>()
 
@@ -129,18 +129,18 @@ export function renderGame(
     ctx.stroke()
   }
 
-  // Logo centered, proportional, no distortion
+  // Logo at the top of the grid, proportional
   if (logoImage?.complete) {
     ctx.save()
     const imgW = logoImage.naturalWidth
     const imgH = logoImage.naturalHeight
-    const maxW = CANVAS_WIDTH * 0.6
-    const maxH = CANVAS_HEIGHT * 0.3
+    const maxW = CANVAS_WIDTH * 0.5
+    const maxH = CANVAS_HEIGHT * 0.15
     const scale = Math.min(maxW / imgW, maxH / imgH, 1)
     const drawW = imgW * scale
     const drawH = imgH * scale
     const lx = (CANVAS_WIDTH - drawW) / 2
-    const ly = (CANVAS_HEIGHT - drawH) / 2
+    const ly = 12
     ctx.drawImage(logoImage, lx, ly, drawW, drawH)
     ctx.restore()
   }
@@ -172,13 +172,15 @@ export function renderGame(
   }
 }
 
+const PREVIEW_BG = '#1a2332'
+
 export function renderPreview(
   ctx: CanvasRenderingContext2D,
   piece: ActivePiece | null,
   width: number,
   height: number
 ) {
-  ctx.fillStyle = BG_COLOR
+  ctx.fillStyle = PREVIEW_BG
   ctx.fillRect(0, 0, width, height)
 
   if (!piece) return

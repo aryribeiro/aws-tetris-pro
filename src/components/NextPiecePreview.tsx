@@ -5,20 +5,17 @@ import type { ActivePiece } from '@/types/game'
 import { renderPreview } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 
-const PREVIEW_SIZE = 130
+const PREVIEW_SIZE = 170
 
 interface NextPiecePreviewProps {
   piece: ActivePiece | null
 }
 
-function getShortDescription(comando: string): string {
+function getFullDescription(comando: string): string {
   const manifest = getAwsManifest()
   const svc = manifest.find((s) => s.comando === comando)
   if (!svc) return ''
-  const desc = svc.descricao
-  const firstSentence = desc.split('.')[0]
-  if (firstSentence.length <= 80) return firstSentence + '.'
-  return firstSentence.slice(0, 77) + '...'
+  return svc.descricao
 }
 
 export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
@@ -73,7 +70,7 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
             opacity: 0.7,
             lineHeight: 1.3,
           }}>
-            {getShortDescription(piece.service.comando)}
+            {getFullDescription(piece.service.comando)}
           </div>
         </div>
       )}
