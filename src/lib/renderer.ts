@@ -43,10 +43,11 @@ function drawBlock(
   y: number,
   category: AwsCategory,
   iconPath: string,
-  ghost?: boolean
+  ghost?: boolean,
+  customSize?: number
 ) {
   const color = CATEGORY_COLORS[category]
-  const size = BLOCK_SIZE
+  const size = customSize ?? BLOCK_SIZE
 
   ctx.save()
 
@@ -197,19 +198,25 @@ export function renderPreview(
   const minRow = Math.min(...blocks.map((b) => b.row))
   const maxRow = Math.max(...blocks.map((b) => b.row))
 
-  const pieceWidth = (maxCol - minCol + 1) * BLOCK_SIZE
-  const pieceHeight = (maxRow - minRow + 1) * BLOCK_SIZE
+  const cols = maxCol - minCol + 1
+  const rows = maxRow - minRow + 1
+  const previewBlock = Math.floor(Math.min(width / cols, height / rows) * 0.75)
 
-  const offsetX = (width - pieceWidth) / 2 - minCol * BLOCK_SIZE
-  const offsetY = (height - pieceHeight) / 2 - minRow * BLOCK_SIZE
+  const pieceWidth = cols * previewBlock
+  const pieceHeight = rows * previewBlock
+
+  const offsetX = (width - pieceWidth) / 2 - minCol * previewBlock
+  const offsetY = (height - pieceHeight) / 2 - minRow * previewBlock
 
   for (const { row, col } of blocks) {
     drawBlock(
       ctx,
-      col * BLOCK_SIZE + offsetX,
-      row * BLOCK_SIZE + offsetY,
+      col * previewBlock + offsetX,
+      row * previewBlock + offsetY,
       piece.service.category,
-      piece.service.iconPath
+      piece.service.iconPath,
+      false,
+      previewBlock
     )
   }
 }
