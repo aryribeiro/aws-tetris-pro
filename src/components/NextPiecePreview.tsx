@@ -5,7 +5,7 @@ import type { ActivePiece } from '@/types/game'
 import { renderPreview } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 
-const PREVIEW_SIZE = 170
+const PREVIEW_SIZE = 220
 
 interface NextPiecePreviewProps {
   piece: ActivePiece | null
@@ -35,7 +35,7 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
     <div style={{ textAlign: 'center' }}>
       <div style={{
         color: '#FF9900',
-        fontSize: '0.75rem',
+        fontSize: '0.9rem',
         fontWeight: 600,
         textTransform: 'uppercase',
         letterSpacing: '0.05em',
@@ -55,20 +55,20 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
         }}
       />
       {piece && (
-        <div style={{ marginTop: '0.5rem' }}>
+        <div style={{ marginTop: '0.6rem' }}>
           <div style={{
             color: '#FF9900',
-            fontSize: '0.8rem',
+            fontSize: '1rem',
             fontWeight: 600,
           }}>
             {piece.service.comando}
           </div>
           <div style={{
             color: '#F2F3F3',
-            fontSize: '0.7rem',
-            marginTop: '0.2rem',
-            opacity: 0.7,
-            lineHeight: 1.3,
+            fontSize: '0.85rem',
+            marginTop: '0.3rem',
+            opacity: 0.8,
+            lineHeight: 1.4,
           }}>
             {getFullDescription(piece.service.comando)}
           </div>

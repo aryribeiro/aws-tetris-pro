@@ -44,10 +44,10 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
         style={{
           background: '#1a2332',
           border: '2px solid #FF9900',
-          borderRadius: '8px',
-          padding: '1.5rem',
-          minWidth: '380px',
-          maxHeight: '80vh',
+          borderRadius: '10px',
+          padding: '2rem',
+          minWidth: '520px',
+          maxHeight: '85vh',
           overflowY: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
@@ -56,9 +56,9 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '1rem',
+          marginBottom: '1.2rem',
         }}>
-          <h2 style={{ color: '#FF9900', margin: 0, fontSize: '1.3rem' }}>
+          <h2 style={{ color: '#FF9900', margin: 0, fontSize: '1.8rem' }}>
             Top 20
           </h2>
           <button
@@ -67,7 +67,7 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
               background: 'transparent',
               border: 'none',
               color: '#F2F3F3',
-              fontSize: '1.5rem',
+              fontSize: '2rem',
               cursor: 'pointer',
               lineHeight: 1,
             }}
@@ -98,7 +98,7 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
                 <tr key={entry.posicao}>
                   <td style={tdStyle}>{entry.posicao}</td>
                   <td style={{ ...tdStyle, textAlign: 'left' }}>
-                    {entry.emoji && <span style={{ marginRight: '0.3rem' }}>{entry.emoji}</span>}
+                    {entry.emoji && <span style={{ marginRight: '0.4rem', fontSize: '1.4rem' }}>{entry.emoji}</span>}
                     {entry.nome}
                   </td>
                   <td style={{ ...tdStyle, textAlign: 'right' }}>
@@ -116,18 +116,18 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
 
 const thStyle: React.CSSProperties = {
   color: '#FF9900',
-  fontSize: '0.75rem',
+  fontSize: '1rem',
   fontWeight: 600,
   textTransform: 'uppercase',
-  padding: '0.4rem 0.5rem',
+  padding: '0.6rem 0.75rem',
   borderBottom: '1px solid rgba(255, 153, 0, 0.3)',
   textAlign: 'center',
 }
 
 const tdStyle: React.CSSProperties = {
   color: '#F2F3F3',
-  fontSize: '0.85rem',
-  padding: '0.4rem 0.5rem',
+  fontSize: '1.1rem',
+  padding: '0.6rem 0.75rem',
   borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
   textAlign: 'center',
 }

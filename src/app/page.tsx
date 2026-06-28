@@ -118,12 +118,13 @@ export default function Home() {
           )}
         </div>
 
-        {/* Right column: sidebar */}
+        {/* Right column: sidebar — aligned to canvas top edge */}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           gap: '0.6rem',
-          width: '150px',
+          width: '200px',
+          marginTop: '2.75rem',
         }}>
           <StatBox label="Pontuação" value={gameState.score.toLocaleString('pt-BR')} />
           <StatBox label="Nível" value={String(gameState.level)} />
