@@ -9,17 +9,19 @@ export async function GET() {
     await turso.execute(`
       CREATE TABLE IF NOT EXISTS ranking (
         posicao   INTEGER PRIMARY KEY,
+        emoji     TEXT NOT NULL DEFAULT '',
         nome      TEXT NOT NULL,
         pontuacao INTEGER NOT NULL
       )
     `)
 
     const result = await turso.execute(
-      'SELECT posicao, nome, pontuacao FROM ranking ORDER BY posicao ASC'
+      'SELECT posicao, emoji, nome, pontuacao FROM ranking ORDER BY posicao ASC'
     )
 
     const ranking = result.rows.map((row) => ({
       posicao: row.posicao as number,
+      emoji: (row.emoji as string) || '',
       nome: row.nome as string,
       pontuacao: row.pontuacao as number,
     }))
@@ -37,7 +39,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { nome, pontuacao } = body as { nome: string; pontuacao: number }
+    const { nome, pontuacao, emoji } = body as { nome: string; pontuacao: number; emoji?: string }
 
     if (!nome || typeof nome !== 'string' || nome.trim().length === 0) {
       return NextResponse.json(
@@ -54,20 +56,23 @@ export async function POST(request: Request) {
     }
 
     const sanitizedNome = nome.trim().slice(0, MAX_NAME_LENGTH)
+    const sanitizedEmoji = (emoji ?? '').slice(0, 4)
 
     await turso.execute(`
       CREATE TABLE IF NOT EXISTS ranking (
         posicao   INTEGER PRIMARY KEY,
+        emoji     TEXT NOT NULL DEFAULT '',
         nome      TEXT NOT NULL,
         pontuacao INTEGER NOT NULL
       )
     `)
 
     const current = await turso.execute(
-      'SELECT nome, pontuacao FROM ranking ORDER BY pontuacao DESC'
+      'SELECT emoji, nome, pontuacao FROM ranking ORDER BY pontuacao DESC'
     )
 
     const entries = current.rows.map((row) => ({
+      emoji: (row.emoji as string) || '',
       nome: row.nome as string,
       pontuacao: row.pontuacao as number,
     }))
@@ -82,12 +87,12 @@ export async function POST(request: Request) {
       }
     }
 
-    entries.push({ nome: sanitizedNome, pontuacao })
+    entries.push({ emoji: sanitizedEmoji, nome: sanitizedNome, pontuacao })
     entries.sort((a, b) => b.pontuacao - a.pontuacao)
     const finalEntries = entries.slice(0, MAX_RANKING)
 
     const posicaoFinal = finalEntries.findIndex(
-      (e) => e.nome === sanitizedNome && e.pontuacao === pontuacao
+      (e) => e.nome === sanitizedNome && e.pontuacao === pontuacao && e.emoji === sanitizedEmoji
     ) + 1
 
     const tx = await turso.transaction('write')
@@ -95,8 +100,8 @@ export async function POST(request: Request) {
       await tx.execute('DELETE FROM ranking')
       for (let i = 0; i < finalEntries.length; i++) {
         await tx.execute({
-          sql: 'INSERT INTO ranking (posicao, nome, pontuacao) VALUES (?, ?, ?)',
-          args: [i + 1, finalEntries[i].nome, finalEntries[i].pontuacao],
+          sql: 'INSERT INTO ranking (posicao, emoji, nome, pontuacao) VALUES (?, ?, ?, ?)',
+          args: [i + 1, finalEntries[i].emoji, finalEntries[i].nome, finalEntries[i].pontuacao],
         })
       }
       await tx.commit()

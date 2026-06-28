@@ -2,7 +2,7 @@ import type { ActivePiece, Grid } from '@/types/game'
 import { CATEGORY_COLORS, type AwsCategory } from '@/lib/aws-manifest'
 import { getPieceBlocks, COLS, ROWS } from '@/lib/engine'
 
-export const BLOCK_SIZE = 32
+export const BLOCK_SIZE = 38
 export const CANVAS_WIDTH = COLS * BLOCK_SIZE
 export const CANVAS_HEIGHT = ROWS * BLOCK_SIZE
 
@@ -129,14 +129,19 @@ export function renderGame(
     ctx.stroke()
   }
 
-  // Logo watermark
+  // Logo centered, proportional, no distortion
   if (logoImage?.complete) {
     ctx.save()
-    ctx.globalAlpha = 0.12
-    const logoSize = Math.min(CANVAS_WIDTH, CANVAS_HEIGHT) * 0.5
-    const lx = (CANVAS_WIDTH - logoSize) / 2
-    const ly = (CANVAS_HEIGHT - logoSize) / 2
-    ctx.drawImage(logoImage, lx, ly, logoSize, logoSize)
+    const imgW = logoImage.naturalWidth
+    const imgH = logoImage.naturalHeight
+    const maxW = CANVAS_WIDTH * 0.6
+    const maxH = CANVAS_HEIGHT * 0.3
+    const scale = Math.min(maxW / imgW, maxH / imgH, 1)
+    const drawW = imgW * scale
+    const drawH = imgH * scale
+    const lx = (CANVAS_WIDTH - drawW) / 2
+    const ly = (CANVAS_HEIGHT - drawH) / 2
+    ctx.drawImage(logoImage, lx, ly, drawW, drawH)
     ctx.restore()
   }
 

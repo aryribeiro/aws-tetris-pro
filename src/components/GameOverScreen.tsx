@@ -2,6 +2,13 @@
 
 import { useState, useEffect } from 'react'
 
+const EMOJI_LIST = [
+  '🐶', '🐱', '🐼', '🦊', '🐸', '🐵', '🦁', '🐯', '🐻', '🐨',
+  '🐷', '🐔', '🦄', '🐲', '🦈', '🐙', '🦋', '🐢', '🐊', '🦜',
+  '👨', '👩', '👨‍💻', '👩‍💻', '🧑‍🚀', '🧑‍🔬', '🧛', '🧟', '🤖', '👾',
+  '👨‍🦱', '👩‍🦱', '👱‍♂️', '👱‍♀️', '👨‍🦳', '👩‍🦳', '🧑‍🎤', '🦹', '🧙', '🎅',
+]
+
 interface GameOverScreenProps {
   score: number
   onRestart: () => void
@@ -10,6 +17,7 @@ interface GameOverScreenProps {
 export default function GameOverScreen({ score, onRestart }: GameOverScreenProps) {
   const [qualifies, setQualifies] = useState<boolean | null>(null)
   const [nome, setNome] = useState('')
+  const [emoji, setEmoji] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [result, setResult] = useState<{ posicao: number } | null>(null)
 
@@ -37,7 +45,7 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
       const res = await fetch('/api/ranking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nome: trimmed, pontuacao: score }),
+        body: JSON.stringify({ nome: trimmed, pontuacao: score, emoji }),
       })
       const data = await res.json()
       if (data.qualificou) {
@@ -67,7 +75,8 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
         border: '2px solid #DD344C',
         borderRadius: '8px',
         padding: '2rem',
-        minWidth: '340px',
+        minWidth: '360px',
+        maxWidth: '420px',
         textAlign: 'center',
       }}>
         <h2 style={{ color: '#DD344C', margin: '0 0 0.5rem', fontSize: '1.5rem' }}>
@@ -94,26 +103,82 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
             <p style={{ color: '#FF9900', margin: '0 0 0.75rem', fontWeight: 600 }}>
               Parabéns! Você entrou no Top 20!
             </p>
-            <input
-              type="text"
-              placeholder="Seu nome (máx. 30 caracteres)"
-              maxLength={30}
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
-              style={{
-                width: '100%',
-                padding: '0.6rem',
-                borderRadius: '4px',
-                border: '1px solid rgba(255, 153, 0, 0.5)',
-                background: '#232F3E',
+
+            {/* Emoji picker */}
+            <div style={{ marginBottom: '0.75rem' }}>
+              <div style={{
                 color: '#F2F3F3',
-                fontSize: '0.9rem',
-                outline: 'none',
-                marginBottom: '0.75rem',
-              }}
-              autoFocus
-            />
+                fontSize: '0.75rem',
+                marginBottom: '0.4rem',
+                opacity: 0.8,
+              }}>
+                Escolha um avatar:
+              </div>
+              <div style={{
+                maxHeight: '120px',
+                overflowY: 'auto',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(10, 1fr)',
+                gap: '4px',
+                background: '#232F3E',
+                borderRadius: '4px',
+                padding: '6px',
+                border: '1px solid rgba(255, 153, 0, 0.3)',
+              }}>
+                {EMOJI_LIST.map((e) => (
+                  <button
+                    key={e}
+                    onClick={() => setEmoji(e)}
+                    style={{
+                      background: emoji === e ? 'rgba(255, 153, 0, 0.3)' : 'transparent',
+                      border: emoji === e ? '1px solid #FF9900' : '1px solid transparent',
+                      borderRadius: '4px',
+                      fontSize: '1.3rem',
+                      cursor: 'pointer',
+                      padding: '2px',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {e}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+              <div style={{
+                background: '#232F3E',
+                border: '1px solid rgba(255, 153, 0, 0.5)',
+                borderRadius: '4px',
+                padding: '0.6rem',
+                fontSize: '1.3rem',
+                minWidth: '42px',
+                textAlign: 'center',
+                lineHeight: 1,
+              }}>
+                {emoji || '?'}
+              </div>
+              <input
+                type="text"
+                placeholder="Seu nome (máx. 30 caracteres)"
+                maxLength={30}
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit() }}
+                style={{
+                  flex: 1,
+                  padding: '0.6rem',
+                  borderRadius: '4px',
+                  border: '1px solid rgba(255, 153, 0, 0.5)',
+                  background: '#232F3E',
+                  color: '#F2F3F3',
+                  fontSize: '0.9rem',
+                  outline: 'none',
+                }}
+                autoFocus
+              />
+            </div>
+
             <button
               onClick={handleSubmit}
               disabled={submitting || nome.trim().length === 0}

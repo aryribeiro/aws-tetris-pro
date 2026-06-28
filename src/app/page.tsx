@@ -8,7 +8,7 @@ import GameOverScreen from '@/components/GameOverScreen'
 import { useGameLoop } from '@/hooks/useGameLoop'
 import { useKeyboard } from '@/hooks/useKeyboard'
 import { useGameAudio } from '@/hooks/useGameAudio'
-import { preloadIcons } from '@/lib/renderer'
+import { preloadIcons, CANVAS_WIDTH } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 import type { GameEvent } from '@/lib/engine'
 
@@ -18,6 +18,7 @@ export default function Home() {
     const paths = manifest.map((s) => s.iconPath)
     preloadIcons(paths)
   }, [])
+
   const [rankingOpen, setRankingOpen] = useState(false)
   const [flashLines, setFlashLines] = useState(false)
   const { muted, playBgm, playBeep, playGameover, toggleMute } = useGameAudio()
@@ -58,66 +59,25 @@ export default function Home() {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
+      paddingTop: '1.5rem',
+      paddingBottom: '1.5rem',
       minHeight: '100vh',
       gap: '0.75rem',
-      padding: '1rem',
     }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1.5rem',
-        width: '100%',
-        maxWidth: '520px',
-        justifyContent: 'space-between',
+      {/* Title centered over the game grid */}
+      <h1 style={{
+        color: '#FF9900',
+        fontSize: '1.6rem',
+        fontWeight: 700,
+        margin: 0,
+        width: `${CANVAS_WIDTH}px`,
+        textAlign: 'center',
       }}>
-        <h1 style={{
-          color: '#FF9900',
-          fontSize: '1.5rem',
-          fontWeight: 700,
-          margin: 0,
-        }}>
-          AWS Tetris Pro
-        </h1>
-
-        <div style={{ display: 'flex', gap: '0.5rem' }}>
-          <button
-            onClick={() => setRankingOpen(true)}
-            style={{
-              background: 'transparent',
-              border: '1px solid rgba(255, 153, 0, 0.5)',
-              borderRadius: '4px',
-              color: '#FF9900',
-              padding: '0.35rem 0.8rem',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            Ranking
-          </button>
-          {gameState.status === 'playing' && (
-            <button
-              onClick={toggleMute}
-              style={{
-                background: 'transparent',
-                border: '1px solid rgba(255, 153, 0, 0.4)',
-                borderRadius: '4px',
-                color: muted ? '#DD344C' : '#FF9900',
-                padding: '0.35rem 0.8rem',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-              }}
-            >
-              {muted ? 'Som OFF' : 'Som ON'}
-            </button>
-          )}
-        </div>
-      </div>
+        AWS Tetris Pro
+      </h1>
 
       {/* Game area */}
-      <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'flex-start' }}>
+      <div style={{ display: 'flex', gap: '1.2rem', alignItems: 'flex-start' }}>
         <GameCanvas
           grid={gameState.grid}
           activePiece={gameState.activePiece}
@@ -127,12 +87,49 @@ export default function Home() {
         <div style={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '0.75rem',
-          minWidth: '140px',
+          gap: '0.6rem',
+          width: '150px',
         }}>
+          {/* Ranking button - same width as cards */}
+          <button
+            onClick={() => setRankingOpen(true)}
+            style={{
+              background: 'transparent',
+              border: '1px solid rgba(255, 153, 0, 0.5)',
+              borderRadius: '6px',
+              color: '#FF9900',
+              padding: '0.5rem',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              width: '100%',
+            }}
+          >
+            Ranking
+          </button>
+
           <StatBox label="Pontuação" value={gameState.score.toLocaleString('pt-BR')} />
           <StatBox label="Nível" value={String(gameState.level)} />
           <StatBox label="Linhas" value={String(gameState.linesCleared)} />
+
+          {gameState.status === 'playing' && (
+            <button
+              onClick={toggleMute}
+              style={{
+                background: 'transparent',
+                border: '1px solid rgba(255, 153, 0, 0.4)',
+                borderRadius: '6px',
+                color: muted ? '#DD344C' : '#FF9900',
+                padding: '0.4rem',
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+                width: '100%',
+              }}
+            >
+              {muted ? 'Som OFF' : 'Som ON'}
+            </button>
+          )}
+
           <NextPiecePreview piece={gameState.nextPiece} />
         </div>
       </div>

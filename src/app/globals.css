@@ -16,5 +16,30 @@ body {
   color: var(--aws-light);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+/* Scrollbar laranja - Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a2332;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--aws-orange);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--aws-orange-dark);
+}
+
+/* Scrollbar laranja - Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--aws-orange) #1a2332;
 }

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 
 interface RankingEntry {
   posicao: number
+  emoji: string
   nome: string
   pontuacao: number
 }
@@ -96,7 +97,10 @@ export default function RankingModal({ open, onClose }: RankingModalProps) {
               {ranking.map((entry) => (
                 <tr key={entry.posicao}>
                   <td style={tdStyle}>{entry.posicao}</td>
-                  <td style={{ ...tdStyle, textAlign: 'left' }}>{entry.nome}</td>
+                  <td style={{ ...tdStyle, textAlign: 'left' }}>
+                    {entry.emoji && <span style={{ marginRight: '0.3rem' }}>{entry.emoji}</span>}
+                    {entry.nome}
+                  </td>
                   <td style={{ ...tdStyle, textAlign: 'right' }}>
                     {entry.pontuacao.toLocaleString('pt-BR')}
                   </td>

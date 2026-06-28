@@ -57,8 +57,9 @@ export function useGameLoop(options?: UseGameLoopOptions) {
   }, [dispatch])
 
   const start = useCallback(() => {
-    dispatch({ type: 'START' })
+    softDropRef.current = false
     lastDropRef.current = performance.now()
+    dispatch({ type: 'START' })
   }, [dispatch])
 
   useEffect(() => {
