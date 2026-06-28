@@ -14,12 +14,14 @@ export default function GameCanvas({ grid, activePiece, flashLines }: GameCanvas
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const logoRef = useRef<HTMLImageElement | null>(null)
   const [flashing, setFlashing] = useState(false)
+  const [logoReady, setLogoReady] = useState(false)
 
   useEffect(() => {
     const img = new Image()
     img.src = '/image/logo.png'
     img.onload = () => {
       logoRef.current = img
+      setLogoReady(true)
     }
   }, [])
 
@@ -39,7 +41,7 @@ export default function GameCanvas({ grid, activePiece, flashLines }: GameCanvas
     if (!ctx) return
 
     renderGame(ctx, grid, activePiece, logoRef.current)
-  })
+  }, [grid, activePiece, logoReady])
 
   return (
     <canvas
