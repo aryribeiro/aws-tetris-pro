@@ -17,7 +17,7 @@ export default function GameCanvas({ grid, activePiece, flashLines }: GameCanvas
 
   useEffect(() => {
     const img = new Image()
-    img.src = '/image/aws logo.jpg'
+    img.src = '/image/logo.png'
     img.onload = () => {
       logoRef.current = img
     }

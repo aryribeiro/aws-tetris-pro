@@ -4,7 +4,7 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'AWS Tetris Pro',
   description: 'Tetris moderno com 235 serviços AWS oficiais. Ranking competitivo Top 20.',
-  icons: { icon: '/image/aws logo.jpg' },
+  icons: { icon: '/image/logo.png' },
 }
 
 export default function RootLayout({
