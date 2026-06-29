@@ -37,18 +37,28 @@ export default function GameCanvas({ grid, activePiece, flashLines }: GameCanvas
     const canvas = canvasRef.current
     if (!canvas) return
 
+    const dpr = window.devicePixelRatio || 1
+    canvas.width = CANVAS_WIDTH * dpr
+    canvas.height = CANVAS_HEIGHT * dpr
+
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
+    ctx.scale(dpr, dpr)
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
     renderGame(ctx, grid, activePiece, logoRef.current)
-  }, [grid, activePiece, logoReady])
+  })
+
+  // force re-render when logo loads
+  void logoReady
 
   return (
     <canvas
       ref={canvasRef}
-      width={CANVAS_WIDTH}
-      height={CANVAS_HEIGHT}
       style={{
+        width: `${CANVAS_WIDTH}px`,
+        height: `${CANVAS_HEIGHT}px`,
         border: '2px solid #FF9900',
         borderRadius: '4px',
         display: 'block',
