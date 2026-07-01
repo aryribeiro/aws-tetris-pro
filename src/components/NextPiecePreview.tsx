@@ -5,7 +5,8 @@ import type { ActivePiece } from '@/types/game'
 import { renderPreview } from '@/lib/renderer'
 import { getAwsManifest } from '@/lib/aws-manifest'
 
-const PREVIEW_SIZE = 220
+const PREVIEW_WIDTH = 220
+const PREVIEW_HEIGHT = 110
 
 interface NextPiecePreviewProps {
   piece: ActivePiece | null
@@ -28,7 +29,7 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
     const ctx = canvas.getContext('2d')
     if (!ctx) return
 
-    renderPreview(ctx, piece, PREVIEW_SIZE, PREVIEW_SIZE)
+    renderPreview(ctx, piece, PREVIEW_WIDTH, PREVIEW_HEIGHT)
   })
 
   return (
@@ -45,8 +46,8 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
       </div>
       <canvas
         ref={canvasRef}
-        width={PREVIEW_SIZE}
-        height={PREVIEW_SIZE}
+        width={PREVIEW_WIDTH}
+        height={PREVIEW_HEIGHT}
         style={{
           border: '1px solid rgba(255, 153, 0, 0.3)',
           borderRadius: '4px',
@@ -57,7 +58,7 @@ export default function NextPiecePreview({ piece }: NextPiecePreviewProps) {
       {piece && (
         <div style={{
           marginTop: '0.6rem',
-          width: `${PREVIEW_SIZE}px`,
+          width: `${PREVIEW_WIDTH}px`,
           textAlign: 'left',
         }}>
           <div style={{
