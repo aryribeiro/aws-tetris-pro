@@ -22,6 +22,10 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
   const [result, setResult] = useState<{ posicao: number } | null>(null)
 
   useEffect(() => {
+    if (score === 0) {
+      setQualifies(false)
+      return
+    }
     fetch('/api/ranking')
       .then((r) => r.json())
       .then((data) => {
@@ -94,7 +98,9 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
 
         {qualifies === false && !result && (
           <p style={{ color: '#F2F3F3', opacity: 0.8 }}>
-            Pontuação não entrou no Top 20.
+            {score === 0
+              ? 'Tente novamente! Você precisa pontuar para entrar no Top 20.'
+              : 'Pontuação não entrou no Top 20.'}
           </p>
         )}
 

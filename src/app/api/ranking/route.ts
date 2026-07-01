@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       )
     }
 
-    if (typeof pontuacao !== 'number' || pontuacao < 0 || !Number.isInteger(pontuacao)) {
+    if (typeof pontuacao !== 'number' || pontuacao <= 0 || !Number.isInteger(pontuacao)) {
       return NextResponse.json(
         { error: 'Pontuação inválida' },
         { status: 400 }
