@@ -30,10 +30,10 @@ export default function GameOverScreen({ score, onRestart }: GameOverScreenProps
           setQualifies(true)
         } else {
           const lowest = ranking[ranking.length - 1].pontuacao
-          setQualifies(score > lowest)
+          setQualifies(score >= lowest)
         }
       })
-      .catch(() => setQualifies(false))
+      .catch(() => setQualifies(true))
   }, [score])
 
   const handleSubmit = async () => {
