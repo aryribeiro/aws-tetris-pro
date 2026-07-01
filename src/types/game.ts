@@ -8,7 +8,7 @@ export interface Cell {
 
 export type Grid = (Cell | null)[][]
 
-export type TetrominoShape = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L'
+export type TetrominoShape = 'I' | 'O' | 'T' | 'S' | 'Z' | 'J' | 'L' | 'D'
 
 export interface ActivePiece {
   shape: TetrominoShape

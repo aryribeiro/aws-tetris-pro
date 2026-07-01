@@ -46,9 +46,15 @@ export const SHAPES: Record<TetrominoShape, RotationStates> = {
     [[0, 0], [0, 1], [0, 2], [1, 0]],
     [[0, 0], [0, 1], [1, 1], [2, 1]],
   ],
+  D: [
+    [[0, 0]],
+    [[0, 0]],
+    [[0, 0]],
+    [[0, 0]],
+  ],
 }
 
-export const ALL_SHAPES: TetrominoShape[] = ['I', 'O', 'T', 'S', 'Z', 'J', 'L']
+export const ALL_SHAPES: TetrominoShape[] = ['I', 'O', 'T', 'S', 'Z', 'J', 'L', 'D']
 
 export function getBlocks(shape: TetrominoShape, rotation: number): number[][] {
   return SHAPES[shape][rotation % 4]
