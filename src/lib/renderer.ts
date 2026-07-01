@@ -200,7 +200,8 @@ export function renderPreview(
 
   const cols = maxCol - minCol + 1
   const rows = maxRow - minRow + 1
-  const previewBlock = Math.floor(Math.min(width / cols, height / rows) * 0.75)
+  const maxCells = Math.max(cols, rows, 4)
+  const previewBlock = Math.floor((Math.min(width, height) / maxCells) * 0.75)
 
   const pieceWidth = cols * previewBlock
   const pieceHeight = rows * previewBlock
